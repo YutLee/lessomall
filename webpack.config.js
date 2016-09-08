@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 
 
 module.exports = {
@@ -6,6 +7,8 @@ module.exports = {
     output: {
         path: path.resolve(__dirname, 'app/public/javascripts'),
         filename: 'pack.js',
+        // libraryTarget: 'umd',
+        // library: 'Awesomemular',
     },
     module: {
       loaders: [
@@ -18,5 +21,17 @@ module.exports = {
           }
         }
       ]
-    }
+    },
+    plugins: [
+      new webpack.optimize.UglifyJsPlugin({
+        output: {
+          comments: false  // remove all comments
+        },
+        compress: {
+          warnings: false
+        },
+        sourceMap: false,
+        mangle: false
+      }),
+    ]
 };
