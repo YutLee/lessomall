@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
-var React = require('react');
+require("node-jsx").install();   //安装"node-jsx"，安装该模块可以使nodejs兼容jsx语法
+var React=require("react");
 var ReactDOMServer = require('react-dom/server');
-var App = React.createFactory(require('./home.js'))
-
-/* GET home page. */
+// var Com=require('./home.js').Component; //引入react组件
+var App=React.createFactory(require('./home.js'));
 router.get('/', function(req, res, next) {
   var props = {
       items: [
@@ -17,26 +17,9 @@ router.get('/', function(req, res, next) {
   console.log(App());
   var rh = ReactDOMServer.renderToString(App(props));
   console.log(rh);
-  res.render('index.html', { title: 'Express' , rh: rh, props: safeStringify(props)});
-  // res.writeHead(200, {'Content-Type': 'text/html'});
-
-  // var table = '';//makeTable();
-  // var html = '<!doctype html>\n\
-  //             <html>\
-  //               <head>\
-  //                   <title>react server render</title>\
-  //               </head>\
-  //               <body><div id="content">' +
-  //                   rh +
-  //                   '</div><script>var APP_PROPS = ' + safeStringify(props) + '</script><script src="/javascripts/pack.js"></script>' +
-  //               '</body>\
-  //             </html>';
-
-  // res.end(html);
+  res.render('test.html', { title: 'Express' , rh: rh, props: safeStringify(props)});
 });
-
 function safeStringify(obj) {
   return JSON.stringify(obj).replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--')
 }
-
 module.exports = router;

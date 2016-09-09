@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+require('node-jsx').install();
 var React = require('react');
 var ReactDOMServer = require('react-dom/server');
 var App = React.createFactory(require('./home.js'))

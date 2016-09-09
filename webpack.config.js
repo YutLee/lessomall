@@ -5,7 +5,7 @@ var webpack = require('webpack');
 module.exports = {
     entry: path.resolve(__dirname, 'app/routes/server.js'),
     output: {
-        path: path.resolve(__dirname, 'app/public/javascripts'),
+        path: path.resolve(__dirname, 'app/public/js'),
         filename: 'pack.js',
         // libraryTarget: 'umd',
         // library: 'Awesomemular',
@@ -19,6 +19,10 @@ module.exports = {
           query: {
             presets: ['react', 'es2015']
           }
+        },
+        {
+          test: /\.css$/, // Only .css files
+          loader: 'style!css' // Run both loaders
         }
       ]
     },

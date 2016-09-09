@@ -13,6 +13,7 @@ var app = express();
 // view engine setup
 // var engines = require('consolidate');//加载html必须模块npm install consolidate mustache --save
 app.engine('html', require('ejs').renderFile);
+// app.engine('.html',require('ejs').__express);
 app.set('views', __dirname + '\\views');
 // app.engine('html', engines.mustache);
 app.set('view engine', 'ejs');
