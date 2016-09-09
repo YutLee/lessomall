@@ -17,7 +17,7 @@ router.get('/', function(req, res, next) {
   console.log(App());
   var rh = ReactDOMServer.renderToString(App(props));
   console.log(rh);
-  res.render('index.html', { title: 'Express' , rh: rh, props: safeStringify(props)});
+  res.render('test.html', { title: 'Express' , rh: rh, props: safeStringify(props)});
   // res.writeHead(200, {'Content-Type': 'text/html'});
 
   // var table = '';//makeTable();
