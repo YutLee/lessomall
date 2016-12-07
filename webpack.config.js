@@ -3,10 +3,11 @@ var webpack = require('webpack');
 
 
 module.exports = {
-    entry: path.resolve(__dirname, 'app/routes/server.js'),
+    entry: path.resolve(__dirname, 'client/index.js'),
     output: {
-        path: path.resolve(__dirname, 'app/public/js'),
-        filename: 'pack.js',
+        path: path.resolve(__dirname, 'public/javascripts'),
+        filename: 'bundle.js',
+        // publicPath: '/static/'
         // libraryTarget: 'umd',
         // library: 'Awesomemular',
     },
