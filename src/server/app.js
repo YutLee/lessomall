@@ -25,6 +25,27 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/users', users);
 
+if(app.get('env') === 'development') {
+	var proxy = require('http-proxy-middleware');
+	// proxy middleware options
+	var options = {
+    target: 'http://localhost:9090', // target host
+    changeOrigin: true,               // needed for virtual hosted sites
+    ws: true,                         // proxy websockets
+    pathRewrite: {
+      // '^/api/old-path' : '/api/new-path',     // rewrite path
+      // '^/api/remove/path' : '/path'           // remove base path
+      '/javascripts/': '/'
+  	},
+    router: {
+      // when request.headers.host == 'dev.localhost:3000',
+      // override target 'http://www.example.org' to 'http://localhost:8000'
+      // 'dev.localhost:3000' : 'http://localhost:8000'
+    }
+  };
+	app.use('/javascripts/', proxy(options));
+}
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
