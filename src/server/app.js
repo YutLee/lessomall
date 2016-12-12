@@ -1,18 +1,31 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import favicon from 'serve-favicon';
+import logger from 'morgan';
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
 
-var index = require('./routes/index');
-var users = require('./routes/users');
+import index from './routes/index';
+import users from './routes/users';
 
-var app = express();
+let app = express();
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.engine('html', function (filePath, options, callback) { // 定义模板引擎
+  fs.readFile(filePath, function (err, content) {
+    if (err) return callback(new Error(err));
+
+    // 这是一个功能极其简单的模板引擎
+    let rendered = content.toString().replace(/{{=([^%>]+)?}}/g, function(s0, s1){
+        return options[s1];
+    });
+
+    return callback(null, rendered);
+  })
+});
+app.set('views', path.join(__dirname, 'views')); // 指定视图所在的位置
+app.set('view engine', 'html'); // 注册模板引擎
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -26,9 +39,9 @@ app.use('/', index);
 app.use('/users', users);
 
 if(app.get('env') === 'development') {
-	var proxy = require('http-proxy-middleware');
+	let proxy = require('http-proxy-middleware');
 	// proxy middleware options
-	var options = {
+	let options = {
     target: 'http://localhost:9090', // target host
     changeOrigin: true,               // needed for virtual hosted sites
     ws: true,                         // proxy websockets
@@ -48,7 +61,7 @@ if(app.get('env') === 'development') {
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -64,4 +77,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+export default app;
