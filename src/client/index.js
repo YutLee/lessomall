@@ -6,6 +6,8 @@ import { createStore } from 'redux'
 import todoApp from './reducers'
 import App from './components/App'
 
+require('./post/style.css');
+
 let store = createStore(todoApp)
 
 render(
