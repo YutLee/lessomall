@@ -10,13 +10,13 @@ a {
 
 .menu {
     width: 100%;
-    background: inline(../images/account-logo.png);
+    background: url(../images/aa.png);
     a {
         text-decoration: none;
-        background: resolve(../images/code.png);
+        background: url(../images/code.png);
     }
     &::before {
+        background: inline(../images/account-logo.png);
         content: '';
-        background: resolve(../images/aa.png);
     }
 }

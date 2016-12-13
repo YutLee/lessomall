@@ -38,7 +38,7 @@ module.exports = {
         },
         {
           test: /\.(png|jpg|gif)$/,
-          loader: 'url-loader?limit=8192' //  <= 8kb的图片base64内联
+          loader: 'url-loader' //  ?limit=8192<= 8kb的图片base64内联
         },
         // {
         //   test: /\.css$/, // Only .css files
@@ -74,7 +74,11 @@ module.exports = {
           loadPaths: ['**'],
           cachebuster: true
         })
-        /*, sprites*/]
+        ,
+        sprites({
+          stylesheetPath: './src/styles/',
+          spritePath: '../dest/server/public/img/',//雪碧图合并后存放地址
+        })]
     },
     plugins: [
       new CommonsChunkPlugin({
