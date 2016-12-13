@@ -1,0 +1,22 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+
+.menu {
+    width: 100%;
+    background: inline(../images/account-logo.png);
+    a {
+        text-decoration: none;
+        background: resolve(../images/code.png);
+    }
+    &::before {
+        content: '';
+        background: resolve(../images/aa.png);
+    }
+}

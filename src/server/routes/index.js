@@ -8,8 +8,8 @@ const router = express.Router();
 /* GET home page. */
 router.get('/', function(req, res, next) {
   const {initialState, html} = baseRender(todoApp, App);
-
-  res.render('index', {app: app, initialState: JSON.stringify(initialState)});
+  console.log(html);
+  res.render('index', {title: 'index', html: html, initialState: JSON.stringify(initialState)});
 });
 
 export default router;

@@ -4,21 +4,23 @@ var webpack = require('webpack');
 var CommonsChunkPlugin = webpack.optimize.CommonsChunkPlugin;
 var ExtractTextPlugin  = require('extract-text-webpack-plugin');
 
-// let postcssSprites = require('postcss-sprites');
-// let sprites = postcssSprites.default;
 let precss = require('precss');
-// let assets = require('postcss-assets');
 let autoprefixer = require('autoprefixer');
+let assets = require('postcss-assets');
+let sprites = require('postcss-sprites');
+// let cssnano = require('cssnano');
+// let sprite = sprites.default;
+
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 module.exports = {
     entry: {
-      post: path.resolve(__dirname, './src/client/post/style.js'),
       index: path.resolve(__dirname, './src/client/index.js')
     },
     output: {
-        path: path.resolve(__dirname, './build/server/public/javascripts'),
-        filename: '[name].js',
+        path: path.resolve(__dirname, './dest/server/public'),
+        filename: 'js/[name]-[chunkhash:8].js',
         // libraryTarget: 'umd',
         // library: 'Awesomemular',
         // publicPath: '/scripts/',
@@ -65,12 +67,19 @@ module.exports = {
       ],
     },
     postcss: function() {
-      return [autoprefixer, precss]
+      return [
+        autoprefixer,
+        precss,
+        assets({
+          loadPaths: ['**'],
+          cachebuster: true
+        })
+        /*, sprites*/]
     },
     plugins: [
       new CommonsChunkPlugin({
         name : 'common',
-        filename: 'common.js',
+        filename: 'js/common-[chunkhash:8].js',
         minChunks: 3
       }),
       new webpack.optimize.UglifyJsPlugin({
@@ -89,16 +98,34 @@ module.exports = {
           'NODE_ENV': JSON.stringify('production')
         }
       }),
-      new ExtractTextPlugin('../stylesheets/[name].css', { //?[hash]-[chunkhash]-[contenthash]-[name]', {
+      new ExtractTextPlugin('css/[name]-[chunkhash:8].css', { //?[hash]-[chunkhash]-[contenthash]-[name]', {
         disable: false,
         allChunks: true
+      }),
+      new HtmlWebpackPlugin({
+        // chunks: ['common', 'index'],
+        // excludeChunks: [], //排除块
+        filename: '../views/index.html',
+        template: './src/server/views/index.html'
       })
-    ]
+    ],
+    resolve: {
+      //查找module的话从这里开始查找
+      // root: 'E:/github/flux-example/src', //绝对路径
+      //自动扩展文件后缀名，意味着我们require模块可以省略不写后缀名
+      // extensions: ['', '.js', '.json', '.css'],
+      //模块别名定义，方便后续直接引用别名，无须多写长长的地址
+      // alias: {
+      //     AppStore : 'js/stores/AppStores.js',//后续直接 require('AppStore') 即可
+      //     ActionType : 'js/actions/ActionType.js',
+      //     AppAction : 'js/actions/AppAction.js'
+      // }
+    }
 };
 
 
 // //雪碧图相关代码
-// let spritesConfig = sprites({
+// let spritesConfig = sprite({
 //   retina: true,//支持retina，可以实现合并不同比例图片
 //   verbose: true,
 //   spritePath: './public/images/',//雪碧图合并后存放地址

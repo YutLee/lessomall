@@ -1,15 +1,12 @@
 <!doctype html>
 <html>
   <head>
-    <title>Redux Universal Example</title>
-    <link rel="stylesheet" type="text/css" href="/stylesheet/style.css">
+    <title>{{=title}}</title>
   </head>
   <body>
-    <div id="root">{{=app}}</div>
+    <div id="root">{{=html}}</div>
     <script>
       window.__INITIAL_STATE__ = {{=initialState}};
     </script>
-    <script src="/javascripts/common.js"></script>
-    <script src="/javascripts/index.js"></script>
   </body>
 </html>
